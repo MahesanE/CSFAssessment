@@ -19,14 +19,14 @@ export class View0Component implements OnInit {
   title!: string;
   comments!: string;
   archive!: File;
-  isCancelled: boolean = false;
+
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private http: HttpClient,
-    private uploadSvc : PhotoService
-  ) {}
+    private uploadSvc: PhotoService
+  ) { }
 
   ngOnInit(): void {
     this.searchForm = this.createForm();
@@ -42,10 +42,7 @@ export class View0Component implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.isCancelled) {
-      console.log('Form submission cancelled!');
-      return;
-    }
+
 
     this.name = this.searchForm.value['name'];
     this.title = this.searchForm.value['title'];
@@ -64,7 +61,15 @@ export class View0Component implements OnInit {
       archive: this.archive
     };
 
-    this.uploadSvc.postUpload(upload);
+    this.uploadSvc.postUpload(upload).subscribe((response) => {
+
+      const bundleId = response.bundleId;
+
+      this.router.navigate(['/view1', bundleId]);
+    }, (error) => {
+      console.error('Error uploading file:', error);
+      
+    });
   }
 
   onFileSelected(event: any): void {
@@ -76,9 +81,7 @@ export class View0Component implements OnInit {
   }
 
   onCancel(): void {
-    console.log('Form cancelled!');
-    this.isCancelled = true;
-    // Add your code to handle cancellation
+    this.router.navigate(["/"])
   }
 
 }

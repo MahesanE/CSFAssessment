@@ -1,0 +1,10 @@
+<div class="container" *ngIf="archive">
+    <h2>{{ archive.title }}</h2>
+    <p>By {{ archive.name }} on {{ archive.date | date }}</p>
+    <p>{{ archive.comments }}</p>
+    <div *ngFor="let url of archive.urls">
+      <img [src]="url" alt="Image from bundle">
+    </div>
+    <button type="button" (click)="onBack()" class="buttons">Back</button>
+  </div>
+  

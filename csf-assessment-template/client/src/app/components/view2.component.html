@@ -1,0 +1,19 @@
+<div *ngIf="bundles && bundles.length; else noBundles" class="bundle-container">
+    <h2 class="bundle-heading">Uploaded Bundles</h2>
+    <ul class="bundle-list">
+      <li *ngFor="let bundle of bundles" class="bundle-item">
+        <h3 class="bundle-title">{{ bundle.title }}</h3>
+        <p class="bundle-date">{{ bundle.date | date:'longDate' }}</p>
+        <button class="view-button" (click)="viewDetails(bundle.bundleId)">View Details</button>
+      </li>
+    </ul>
+  </div>
+  
+  <ng-template #noBundles>
+    <div class="no-bundles">No bundles found.</div>
+  </ng-template>
+  
+  <div class="upload-button-container">
+    <button type="button" class="upload-button" (click)="toUpload()">Upload</button>
+  </div>
+  

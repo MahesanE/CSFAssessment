@@ -31,10 +31,11 @@ public class S3Service {
     public List<String> unzipAndUploadToS3(MultipartFile file) throws IOException {
         List<String> uploadedFiles = new ArrayList<>();
 
-        // Unzipping
+        // Unzipping the zip file
         ZipInputStream zipStream = new ZipInputStream(file.getInputStream());
         ZipEntry entry = null;
 
+        //to check if there are more directories or just files
         while ((entry = zipStream.getNextEntry()) != null) {
             if (!entry.isDirectory()) {
                 String fileName = entry.getName();

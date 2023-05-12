@@ -1,19 +1,23 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Upload } from '../models';
-import {firstValueFrom} from 'rxjs';
+import { Observable, firstValueFrom } from 'rxjs';
+import { environtmentRailway } from '../environtmentRailway.prod';
+import { environment } from '../environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PhotoService {
 
-  private apiUrl = "http://localhost:8080/upload";
+  private apiUrl = environtmentRailway.apiUrl;
+
+  //private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) { }
 
 
-  postUpload(upload: Upload) {
+  postUpload(upload: Upload): Observable<any> {
 
     const formData = new FormData();
     formData.append('name', upload.name);
@@ -21,20 +25,32 @@ export class PhotoService {
     formData.append('comments', upload.comments);
     formData.append('file', upload.archive);
 
-    firstValueFrom(
-          this.http.post(this.apiUrl, formData)
-        )
-          .then(() => {
-            console.log('File uploaded successfully!');
-            // Handle success
-          })
-          .catch((error) => {
-            console.error('Error uploading file:', error);
-            // Handle error
-          });
-
+    // firstValueFrom(
+    //       this.http.post(this.apiUrl, formData)
+    //     )
+    //       .then(() => {
+    //         console.log('File uploaded successfully!');
+    //         // Handle success
+    //       })
+    //       .catch((error) => {
+    //         console.error('Error uploading file:', error);
+    //         // Handle error
+    //       });
+    return this.http.post(this.apiUrl, formData);
 
   }
+
+
+  getBundlebyBundleId(bundleId: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/bundleId/${bundleId}`);
+  }
+
+  getBundles(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/bundles`);
+}
+
+
+
 }
 
 
